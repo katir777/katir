@@ -12,9 +12,43 @@
             margin: 20px;
             background-color: #f8f9fa;
         }
+        .logo {
+            max-width: 200px;
+            margin: 0 auto 20px;
+        }
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar h2 {
+            text-align: right;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #ddd;
+        }
+        .sidebar ul li:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+        }
         .container {
-            max-width: 1000px;
-            margin: auto;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -28,6 +62,7 @@
             width: 250px;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
+            cursor: pointer;
         }
         .product:hover {
             transform: scale(1.05);
@@ -37,16 +72,6 @@
             max-height: 200px;
             object-fit: cover;
             border-radius: 8px;
-        }
-        .product button {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
         }
         .cart {
             margin-top: 20px;
@@ -61,48 +86,167 @@
             background-color: #007bff;
             width: 100%;
         }
+        .modal {
+            display: none; /* إخفاء النافذة بشكل افتراضي */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            position: relative;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .modal-buttons button {
+            width: 48%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .modal-facebook {
+            background-color: #3b5998;
+            color: white;
+        }
+        .modal-instagram {
+            background-color: #e4405f;
+            color: white;
+        }
+        .close {
+            color: red;
+            font-size: 20px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>متجر كثير</h1>
-    <div class="container">
-        <div class="product">
-            <img src="1.jpg" alt="منتج 1">
-            <h3>ملصق توعوي</h3>
-            <p>ديالي هذا ليس للبيع</p>
-            <button onclick="addToCart('اسم المنتج 1')">إضافة إلى السلة</button>
+    <img src="logo.png" alt="شعار المتجر" class="logo">
+
+    <!-- الشريط الجانبي -->
+    <div class="sidebar">
+        <h2>قائمة المتجر</h2>
+        <ul>
+            <li onclick="showProducts()">المنتجات</li>
+            <li onclick="showCart()">سلة المشتريات</li>
+        </ul>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <div class="container" id="products-container">
+            <div class="product" onclick="showDetails('1.jpg', 'ملصق توعوي', 'ديالي هذا ليس للبيع', 0)">
+                <img src="1.jpg" alt="منتج 1">
+                <h3>ملصق توعوي</h3>
+                <p>ديالي هذا ليس للبيع</p>
+            </div>
+            <div class="product" onclick="showDetails('2.jpg', 'ballon d\'or', '999 DH', 999)">
+                <img src="2.jpg" alt="منتج 2">
+                <h3>ballon d'or</h3>
+                <p>999 DH</p>
+            </div>
+            <div class="product" onclick="showDetails('3.jpg', 'world cup', '9999999999 DH (كريستيانو ا مخداهش )', 9999999999)">
+                <img src="3.jpg" alt="منتج 3">
+                <h3>world cup</h3>
+                <p>9999999999 DH (كريستيانو ا مخداهش )</p>
+            </div>
+            <div class="product" onclick="showDetails('4.jpg', 'UCL cup', '1 DH (رخيص غار حديد هذاك)', 1)">
+                <img src="4.jpg" alt="منتج 4">
+                <h3>UCL cup</h3>
+                <p>1 DH (رخيص غار حديد هذاك)</p>
+            </div>
         </div>
-        <div class="product">
-            <img src="2.jpg" alt="منتج 2">
-            <h3>ballon d'or</h3>
-            <p>999 DH</p>
-            <button onclick="addToCart('اسم المنتج 2')">إضافة إلى السلة</button>
-        </div>
-        <div class="product">
-            <img src="3.jpg" alt="منتج 3">
-            <h3>world cup</h3>
-            <p>9999999999 DH (كريستيانو ا مخداهش )</p>
-            <button onclick="addToCart('اسم المنتج 3')">إضافة إلى السلة</button>
-        </div>
-        <div class="product">
-            <img src="4.jpg" alt="منتج 4">
-            <h3>UCL cup</h3>
-            <p>1 DH (رخيص غار حديد هذاك)</p>
-            <button onclick="addToCart('اسم المنتج 4')">إضافة إلى السلة</button>
+
+        <div class="cart" id="cart-container" style="display: none;">
+            <h2>سلة المشتريات</h2>
+            <ul id="cart-items"></ul>
+            <p><strong id="total-price">المجموع: 0 DH</strong></p>
+            <button onclick="checkout()">إتمام الشراء</button>
         </div>
     </div>
 
-    <div class="cart">
-        <h2>سلة المشتريات</h2>
-        <ul id="cart-items"></ul>
-        <button onclick="checkout()">إتمام الشراء</button>
+    <!-- مودال تفاصيل المنتج -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modal-image" src="" alt="صورة المنتج">
+            <h2 id="modal-title"></h2>
+            <p id="modal-description"></p>
+            <button id="modal-button" onclick="addToCartFromModal()">إضافة إلى السلة</button>
+        </div>
+    </div>
+
+    <!-- مودال اختيار التواصل -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>اختر طريقة التواصل</h2>
+            <div class="modal-buttons">
+                <button class="modal-facebook" onclick="redirectToFacebook()">فيسبوك</button>
+                <button class="modal-instagram" onclick="redirectToInstagram()">إنستقرام</button>
+            </div>
+        </div>
     </div>
 
     <script>
         let cart = [];
+        let totalPrice = 0;
+        let selectedProduct = {};
 
-        function addToCart(productName) {
-            cart.push(productName);
+        window.onload = function() {
+            document.getElementById('product-modal').style.display = 'none';
+            document.getElementById('checkout-modal').style.display = 'none'; // تأكد من إخفاء نافذة التواصل
+            showProducts();
+        };
+
+        function showProducts() {
+            document.getElementById('products-container').style.display = 'flex';
+            document.getElementById('cart-container').style.display = 'none';
+        }
+
+        function showCart() {
+            document.getElementById('products-container').style.display = 'none';
+            document.getElementById('cart-container').style.display = 'block';
+        }
+
+        function showDetails(image, name, description, price) {
+            selectedProduct = { name, price };
+            document.getElementById('modal-image').src = image;
+            document.getElementById('modal-title').textContent = name;
+            document.getElementById('modal-description').textContent = description;
+            document.getElementById('product-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').style.display = 'none';
+            document.getElementById('checkout-modal').style.display = 'none';
+        }
+
+        function addToCartFromModal() {
+            addToCart(selectedProduct.name, selectedProduct.price);
+            closeModal();
+        }
+
+        function addToCart(productName, price) {
+            cart.push({ name: productName, price: price });
+            totalPrice += price;
             updateCart();
         }
 
@@ -111,9 +255,10 @@
             cartList.innerHTML = '';
             cart.forEach(item => {
                 let li = document.createElement('li');
-                li.textContent = item;
+                li.textContent = item.name + " - " + item.price + " DH";
                 cartList.appendChild(li);
             });
+            document.getElementById('total-price').textContent = `المجموع: ${totalPrice} DH`;
         }
 
         function checkout() {
@@ -121,8 +266,15 @@
                 alert('السلة فارغة!');
                 return;
             }
-            alert('شكراً لشرائك! سيتم تحويلك لصفحة الدفع.');
-            window.location.href = 'https://www.paypal.com'; // استبدل برابط الدفع المناسب
+            document.getElementById('checkout-modal').style.display = 'flex'; // إظهار النافذة هنا فقط
+        }
+
+        function redirectToFacebook() {
+            window.location.href = 'https://web.facebook.com/profile.php?id=100045271883403';
+        }
+
+        function redirectToInstagram() {
+            window.location.href = 'https://www.instagram.com/katir_4.0';
         }
     </script>
 </body>
